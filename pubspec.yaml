@@ -31,6 +31,17 @@ dependencies:
   firebase_core: ^1.4.0
   provider: ^5.0.0
   cloud_firestore: ^2.4.0
+  flutter_pdfview: ^1.0.4
+
+  # path
+  file_picker: ^3.0.3
+  path: ^1.8.0
+  path_provider: ^2.0.2
+
+  # download PDF
+  http: ^0.13.3
+  firebase_storage: ^10.0.1
+  sqflite: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,9 @@
-import 'package:devel_app/providers/articles.dart';
+import 'package:devel_app/providers/readings.dart';
 import 'package:devel_app/screens/articles_screen.dart';
+import 'package:devel_app/screens/readings_screen.dart';
+import 'package:devel_app/screens/pdf_viewer.dart';
+import 'package:devel_app/screens/read_article_screen.dart';
+import 'package:devel_app/screens/tabs_screen.dart';
 import 'package:devel_app/utils/material_color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     if (_error) {
       return Scaffold(
+        appBar: AppBar(title: Text("Error"),),
         body: Center(
           child: Text("Error"),
         ),
@@ -54,7 +59,10 @@ class _MyAppState extends State<MyApp> {
 
     // Show a loader until FlutterFire is initialized
     if (!_initialized) {
-    return Scaffold(
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Error"),
+        ),
         body: Center(
           child: Text("Loading"),
         ),
@@ -64,14 +72,19 @@ class _MyAppState extends State<MyApp> {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Articles()),
+        ChangeNotifierProvider(create: (_) => Readings()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: createMaterialColor(Color.fromRGBO(43, 49, 77, 1)),
         ),
-        home: ArticlesScreen(),
+        home: TabsScreen(),
+        routes: {
+          ArticlesScreen.routeName: (_) => ArticlesScreen(),
+          ReadArticleScreen.routeName: (_) => ReadArticleScreen(),
+          PdfViewerScreen.routeName:(_) =>PdfViewerScreen(),
+        },
       ),
     );
   }

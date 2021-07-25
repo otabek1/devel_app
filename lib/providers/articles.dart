@@ -39,7 +39,7 @@ class Articles with ChangeNotifier {
       var _article = Article(
           id: docChange.doc.id,
           title: data["title"],
-          content: data["content"],
+          content: (data["content"] as String).replaceAll("\n", "\n"),
           author: (data["author"]),
           publishDate: data["publishDate"].toDate());
       var _isAvailable =
@@ -55,7 +55,9 @@ class Articles with ChangeNotifier {
   }
 
   List<Article> articles() {
-    getArticles();
+    if (_articles.isEmpty) {
+      getArticles();
+    }
     return [..._articles];
   }
 }
