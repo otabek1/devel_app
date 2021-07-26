@@ -50,7 +50,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     if (_error) {
       return Scaffold(
-        appBar: AppBar(title: Text("Error"),),
+        appBar: AppBar(
+          title: Text("Error"),
+        ),
         body: Center(
           child: Text("Error"),
         ),
@@ -59,12 +61,14 @@ class _MyAppState extends State<MyApp> {
 
     // Show a loader until FlutterFire is initialized
     if (!_initialized) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Error"),
-        ),
-        body: Center(
-          child: Text("Loading"),
+      return MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text("Loading"),
+          ),
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       );
     }
@@ -83,7 +87,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           ArticlesScreen.routeName: (_) => ArticlesScreen(),
           ReadArticleScreen.routeName: (_) => ReadArticleScreen(),
-          PdfViewerScreen.routeName:(_) =>PdfViewerScreen(),
+          PdfViewerScreen.routeName: (_) => PdfViewerScreen(),
         },
       ),
     );

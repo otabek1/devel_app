@@ -7,10 +7,15 @@ import 'package:provider/provider.dart';
 
 class ReadingsScreen extends StatelessWidget {
   final isBook;
+  var readings;
   ReadingsScreen(this.isBook);
   @override
   Widget build(BuildContext context) {
-    final readings = Provider.of<Readings>(context).readings();
+    if (isBook) {
+      readings = Provider.of<Readings>(context).books();
+    } else {
+      readings = Provider.of<Readings>(context).articles();
+    }
     print(readings.length);
     return Container(
       height: 500,

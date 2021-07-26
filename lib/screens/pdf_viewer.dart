@@ -29,7 +29,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     final file = arguments["file"];
     var isDownloaded = (file != null);
     final text = '${indexPage + 1} of $pages';
-    print("PATH FROM PDF >>>> $path");
+    // print("PATH FROM PDF >>>> $path or ${arguments['file'].path}");
+    // print()
     // if (path!.isEmpty) {
     //   Future.delayed(Duration(seconds: 2));
     //   print("waiting;");

@@ -12,7 +12,26 @@ Widget ListItem(BuildContext context, Reading reading) {
       print("PATH=== ${reading.path}");
       if (reading.path.isEmpty) {
         print("EMPTY >>>>");
+        showDialog(
+            context: context,
+            builder: (ctx) {
+              return Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(),
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Text("Loading")),
+                    ],
+                  ),
+                ),
+              );
+            });
         file = await PDFApi.loadNetwork(reading.url, reading.title);
+        Navigator.of(context).pop();
         print("file path >>>> ${file.path}");
         Provider.of<Readings>(context, listen: false)
             .addReadingPath(reading.id, file.path);
