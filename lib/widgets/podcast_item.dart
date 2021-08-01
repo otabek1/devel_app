@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
-Widget PodcastItem(BuildContext context, String id) {
+Widget PodcastItem(BuildContext context, Podcast podcast) {
   var size = MediaQuery.of(context).size;
   var file;
-  var podcast = Provider.of<Podcasts>(context, listen: true).findById(id);
   return GestureDetector(
     onTap: () async {
       // Navigator.of(context).pop();
@@ -17,7 +16,6 @@ Widget PodcastItem(BuildContext context, String id) {
       // print("PATH=== ${reading.path}");
       print("Current podcast>>> ${podcast.title} and path >> ${podcast.path}");
       if (podcast.path.isEmpty) {
-        Provider.of<Podcasts>(context, listen: false).notify();
         print("EMPTY >>>>");
         showDialog(
             context: context,
@@ -31,7 +29,7 @@ Widget PodcastItem(BuildContext context, String id) {
                       CircularProgressIndicator(),
                       Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Text("Loading")),
+                          child: Text("Yuklanmoqda ...")),
                     ],
                   ),
                 ),
@@ -40,8 +38,8 @@ Widget PodcastItem(BuildContext context, String id) {
         file = await PDFApi.loadNetwork(podcast.url, podcast.title, true);
         Navigator.of(context).pop();
         print("file path >>>> ${file.path}");
-        Provider.of<Podcasts>(context, listen: false)
-            .addPodcastPath(podcast.id, file.path);
+        podcast.path = file.path;
+        Provider.of<Podcasts>(context, listen: false).updatePath(podcast);
 
         OpenFile.open(file.path);
       } else {

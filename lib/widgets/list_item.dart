@@ -24,7 +24,7 @@ Widget ListItem(BuildContext context, Reading reading) {
                       CircularProgressIndicator(),
                       Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Text("Loading")),
+                          child: Text("Yuklanmoqda ...")),
                     ],
                   ),
                 ),
@@ -33,8 +33,8 @@ Widget ListItem(BuildContext context, Reading reading) {
         file = await PDFApi.loadNetwork(reading.url, reading.title, false);
         Navigator.of(context).pop();
         print("file path >>>> ${file.path}");
-        Provider.of<Readings>(context, listen: false)
-            .addReadingPath(reading.id, file.path);
+        reading.path = file.path;
+        Provider.of<Readings>(context, listen: false).updatePath(reading);
       }
       print("navigator before");
       if (file == null) {
@@ -94,10 +94,9 @@ Widget ListItem(BuildContext context, Reading reading) {
             print("PATH=== $reading.path");
             if (reading.path.isEmpty) {
               print("EMPTY >>>>");
-              final file = await PDFApi.loadNetwork(reading.url, reading.title, false);
+              final file =
+                  await PDFApi.loadNetwork(reading.url, reading.title, false);
               print("file path >>>> ${file.path}");
-              Provider.of<Readings>(context, listen: false)
-                  .addReadingPath(reading.id, file.path);
             }
             Navigator.of(context).pushNamed(PdfViewerScreen.routeName,
                 arguments: {"title": reading.title, "path": reading.path});

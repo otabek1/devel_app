@@ -94,24 +94,23 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
-                    child: Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: Theme.of(context).primaryColor,
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Align(
-                        alignment: Alignment(0, 0),
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(PodcastsScreen.routeName);
-                            },
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(PodcastsScreen.routeName);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                      child: Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: Theme.of(context).primaryColor,
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Align(
+                          alignment: Alignment(0, 0),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                             child: Text(
                               'Podkastlar',
                               textAlign: TextAlign.center,

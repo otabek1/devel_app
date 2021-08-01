@@ -16,37 +16,42 @@ class _AddTodoDialogWidgetState extends State<AddTodoDialogWidget> {
 
   @override
   Widget build(BuildContext context) => SafeArea(
-    child: Container(
+        child: Container(
+          height: 500,
           padding: EdgeInsets.only(
-            // bottom: MediaQuery.of(context).viewInsets.bottom, //+ 10.0,
-          ),
+              // bottom: MediaQuery.of(context).viewInsets.bottom, //+ 10.0,
+              ),
           child: AlertDialog(
+            scrollable: true,
             content: Form(
               key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Yangi vazifa qo\'shish',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Yangi vazifa qo\'shish',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  TodoFormWidget(
-                    onChangedTitle: (title) => setState(() => this.title = title),
-                    onChangedDescription: (description) =>
-                        setState(() => this.description = description),
-                    onSavedTodo: addTodo,
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    TodoFormWidget(
+                      onChangedTitle: (title) =>
+                          setState(() => this.title = title),
+                      onChangedDescription: (description) =>
+                          setState(() => this.description = description),
+                      onSavedTodo: addTodo,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-  );
+      );
 
   void addTodo() {
     final isValid = _formKey.currentState!.validate();

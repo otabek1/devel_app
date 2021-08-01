@@ -1,3 +1,4 @@
+import 'package:devel_app/screens/contact_screen.dart';
 import 'package:devel_app/screens/podcasts_screen.dart';
 import 'package:devel_app/screens/readings_screen.dart';
 import 'package:devel_app/screens/todo_screen.dart';
@@ -69,6 +70,9 @@ class MainDrawer extends StatelessWidget {
           }),
           buildListTile("Todo", Icons.check, () {
             Navigator.of(context).pushReplacementNamed(TodoScreen.routeName);
+          }),
+          buildListTile("Bog'lanish", Icons.phone, () {
+            Navigator.of(context).pushReplacementNamed(ContactScreen.routeName);
           }),
         ],
       ),

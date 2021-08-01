@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class TodoFormWidget extends StatelessWidget {
   final String title;
   final String description;
@@ -25,7 +24,7 @@ class TodoFormWidget extends StatelessWidget {
             buildTitle(),
             SizedBox(height: 8),
             buildDescription(),
-            SizedBox(height: 32),
+            SizedBox(height: 25),
             buildButton(),
           ],
         ),
@@ -47,13 +46,19 @@ class TodoFormWidget extends StatelessWidget {
         ),
       );
 
-  Widget buildDescription() => TextFormField(
-        maxLines: 3,
-        initialValue: description,
-        onChanged: onChangedDescription,
-        decoration: InputDecoration(
-          border: UnderlineInputBorder(),
-          labelText: 'Tavsif',
+  Widget buildDescription() => Container(
+        height: 80,
+        child: TextFormField(
+          maxLines: null,
+          minLines: null,
+          expands: true,
+          enableSuggestions: true,
+          initialValue: description,
+          onChanged: onChangedDescription,
+          decoration: InputDecoration(
+            border: UnderlineInputBorder(),
+            labelText: 'Tavsif',
+          ),
         ),
       );
 

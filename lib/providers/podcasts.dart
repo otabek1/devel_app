@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devel_app/helpers/db_helper.dart';
+import 'package:devel_app/helpers/podcast_db.dart';
 import 'package:flutter/foundation.dart';
 
 class Podcast {
@@ -9,120 +9,77 @@ class Podcast {
   String path;
 
   Podcast(this.id, this.title, this.url, this.path);
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "url": url,
+        "path": path,
+      };
+
+  static Podcast fromJson(Map<String, dynamic> json) =>
+      Podcast(json["id"], json["title"], json["url"], json["path"]);
 }
 
 class Podcasts with ChangeNotifier {
-  bool _isFirst = true;
-  List<Podcast> _podcasts = [];
-
-  List<Podcast> podcasts() {
-    if (_podcasts.isEmpty) {
-      getPodcasts();
-      fetchAndSetPath();
-      return _podcasts;
-    } else {
-      fetchAndSetPath();
-      return _podcasts;
-    }
-  }
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference articlesReference =
+  CollectionReference PodcastsReference =
       FirebaseFirestore.instance.collection("podcasts");
 
-  void getPodcasts() async {
-    var snapshot = await articlesReference.get();
+  List<Podcast> _podcasts = [];
 
-    if (snapshot.docChanges.isNotEmpty) {
-      var docChanges = snapshot.docChanges;
-      addPodcast(docChanges);
-      fetchAndSetPath();
-    }
+  Future<List<Podcast>> get podcasts async {
+    await getAndSetData();
+    return _podcasts;
   }
 
-  void addPodcastPath(String id, String path) {
-    var index = _podcasts.indexWhere((element) => element.id == id);
-    if (index != -1) {
-      print("updating path");
-      DBHelper.updatePath("Podcasts", id, path.toString())
-          .then((value) => fetchAndSetPath());
+  Future<void> getAndSetData() async {
+    print("calling get and set");
+    var data = await PodcastDb.getData();
+    var fromFirebase = getPodcastFromFirebase();
 
-      _podcasts[index] = Podcast(
-          id, _podcasts[index].title, _podcasts[index].url, path.toString());
-      print(_podcasts[index].toString());
-    }
-
-    notifyListeners();
-  }
-
-  Future<void> fetchAndSetPath() async {
-    try {
-      print("try");
-      final dataList = await DBHelper.getData("Podcasts");
-      print("tried $dataList");
-
-      dataList.forEach((item) {
-        var id = item["id"];
-        var index = _podcasts.indexWhere((element) => element.id == id);
-
-        if (index != -1) {
-          if (item["path"] == null) {
-            _podcasts[index] =
-                Podcast(id, _podcasts[index].title, _podcasts[index].url, "");
-          } else {
-            _podcasts[index] =
-                Podcast(id, _podcasts[index].title, _podcasts[index].url, "");
-          }
-          // print("PATH FROM SQL ${item["path"]}");
-        }
-
-        _podcasts.forEach((element) {
-          print("PATH >>> ${element.path}");
-        });
-        if (_isFirst) {
-          notifyListeners();
-          _isFirst = !_isFirst;
-        } else {
-          // _isFirst = !_isFirst;
-        }
-      });
-    } catch (e) {
-      print("Catch ${e.toString()}");
-      _podcasts.forEach((element) {
-        print("PATh FROM SQLSS ${element.path}");
-      });
-    }
-  }
-
-  Podcast findById(String id) {
-    return _podcasts.firstWhere((element) => element.id == id);
-  }
-
-  void notify() {
-    notifyListeners();
-  }
-
-  void addPodcast(List<DocumentChange<Object?>> docChanges) {
-    docChanges.forEach((docChange) {
-      Map<String, dynamic> data = docChange.doc.data() as Map<String, dynamic>;
-      // print(data);
-      // if (_podcasts.indexWhere((element) => element.id == docChange.doc.id) !=
-      //     -1) {}
-      var podcast = Podcast(docChange.doc.id, data["title"], data["url"], "");
-
-      var _isAvailable =
-          _podcasts.indexWhere((element) => element.id == podcast.id);
-      if (_isAvailable == -1) {
-        print("addding +++++");
-        _podcasts.add(podcast);
-
-        // DBHelper.isAvailable("Podcasts", podcast.id);
-        DBHelper.insert("Podcasts", {
-          "id": docChange.doc.id,
-          "title": data["title"],
-          "url": data["url"],
-        });
+    data.forEach((element) {
+      var fromJson = Podcast.fromJson(element);
+      if (_podcasts.indexWhere((element) => element.id == fromJson.id) == -1) {
+        _podcasts.add(fromJson);
       }
     });
+    fromFirebase.forEach((fireaseElement) {
+      if (_podcasts.indexWhere((element) => element.id == fireaseElement.id) ==
+          -1) {
+        _podcasts.add(fireaseElement);
+      }
+    });
+
+    // notifyListeners();
+  }
+
+  List<Podcast> getPodcastFromFirebase() {
+    List<Podcast> podcastsFromFirebase = [];
+    PodcastsReference.get().then((value) {
+      value.docs.forEach((element) {
+        var data = element.data();
+        // print("data $data");
+        var fromJson = Podcast.fromJson(data as Map<String, dynamic>);
+        if (_podcasts.indexWhere((element) => element.id == fromJson.id) ==
+            -1) {
+          podcastsFromFirebase.add(fromJson);
+        }
+      });
+
+      if (podcastsFromFirebase.isNotEmpty) {
+        podcastsFromFirebase.forEach((element) async {
+          await PodcastDb.insert(element);
+        });
+      }
+      return podcastsFromFirebase;
+    });
+
+    return [];
+  }
+
+  Future<void> updatePath(Podcast podcast) async {
+    print("updating path ${podcast.path}");
+    await PodcastDb.insert(podcast);
   }
 }

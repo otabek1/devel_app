@@ -1,16 +1,15 @@
 import 'package:devel_app/providers/podcasts.dart';
 import 'package:devel_app/providers/readings.dart';
 import 'package:devel_app/providers/todos.dart';
+import 'package:devel_app/screens/contact_screen.dart';
 import 'package:devel_app/screens/home_screen.dart';
 import 'package:devel_app/screens/pdf_viewer.dart';
 import 'package:devel_app/screens/podcasts_screen.dart';
 import 'package:devel_app/screens/readings_screen.dart';
-import 'package:devel_app/screens/tabs_screen.dart';
 import 'package:devel_app/screens/todo_screen.dart';
 import 'package:devel_app/utils/material_color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -65,11 +64,11 @@ class _MyAppState extends State<MyApp> {
 
     // Show a loader until FlutterFire is initialized
     if (!_initialized) {
-      SystemChrome.setSystemUIOverlayStyle(
-          SystemUiOverlayStyle(statusBarColor: Colors.white12));
+     
       return MaterialApp(
         home: Scaffold(
           appBar: AppBar(
+            brightness: Brightness.dark,
             title: Text("Loading"),
           ),
           body: Center(
@@ -89,14 +88,17 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+          appBarTheme: AppBarTheme(brightness: Brightness.dark),
           primarySwatch: createMaterialColor(Color.fromRGBO(43, 49, 77, 1)),
         ),
+        debugShowCheckedModeBanner: false,
         home: HomeScreen(),
         routes: {
           PdfViewerScreen.routeName: (_) => PdfViewerScreen(),
           PodcastsScreen.routeName: (_) => PodcastsScreen(),
           ReadingsScreen.routeName: (_) => ReadingsScreen(),
           TodoScreen.routeName: (_) => TodoScreen(),
+          ContactScreen.routeName: (_) => ContactScreen(),
         },
       ),
     );
