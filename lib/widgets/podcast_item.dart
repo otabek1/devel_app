@@ -1,16 +1,23 @@
 import 'package:devel_app/api/pdf_api.dart';
-import 'package:devel_app/providers/readings.dart';
-import 'package:devel_app/screens/pdf_viewer.dart';
+import 'package:devel_app/providers/podcasts.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
-Widget ListItem(BuildContext context, Reading reading) {
+Widget PodcastItem(BuildContext context, String id) {
   var size = MediaQuery.of(context).size;
   var file;
+  var podcast = Provider.of<Podcasts>(context, listen: true).findById(id);
   return GestureDetector(
     onTap: () async {
-      print("PATH=== ${reading.path}");
-      if (reading.path.isEmpty) {
+      // Navigator.of(context).pop();
+      // final player = AudioPlayer();
+      // var duration = await player.setFilePath(file.path);
+      // player.play();
+      // print("PATH=== ${reading.path}");
+      print("Current podcast>>> ${podcast.title} and path >> ${podcast.path}");
+      if (podcast.path.isEmpty) {
+        Provider.of<Podcasts>(context, listen: false).notify();
         print("EMPTY >>>>");
         showDialog(
             context: context,
@@ -30,25 +37,30 @@ Widget ListItem(BuildContext context, Reading reading) {
                 ),
               );
             });
-        file = await PDFApi.loadNetwork(reading.url, reading.title, false);
+        file = await PDFApi.loadNetwork(podcast.url, podcast.title, true);
         Navigator.of(context).pop();
         print("file path >>>> ${file.path}");
-        Provider.of<Readings>(context, listen: false)
-            .addReadingPath(reading.id, file.path);
-      }
-      print("navigator before");
-      if (file == null) {
-        Navigator.of(context).pushNamed(PdfViewerScreen.routeName, arguments: {
-          "title": reading.title,
-          "path": reading.path,
-          "file": null
-        });
+        Provider.of<Podcasts>(context, listen: false)
+            .addPodcastPath(podcast.id, file.path);
+
+        OpenFile.open(file.path);
       } else {
-        Navigator.of(context).pushNamed(PdfViewerScreen.routeName, arguments: {
-          "title": reading.title,
-          "path": null,
-          "file": file,
-        });
+        print("path >>> ${podcast.path}");
+        OpenFile.open(podcast.path);
+      }
+      // print("navigator before");
+      if (file == null) {
+        // Navigator.of(context).pushNamed(PdfViewerScreen.routeName, arguments: {
+        //   "title": reading.title,
+        //   "path": reading.path,
+        //   "file": null
+        // });
+      } else {
+        // Navigator.of(context).pushNamed(PdfViewerScreen.routeName, arguments: {
+        //   "title": reading.title,
+        //   "path": null,
+        //   "file": file,
+        // });
       }
     },
     child: Container(
@@ -68,7 +80,7 @@ Widget ListItem(BuildContext context, Reading reading) {
       ),
       child: ListTile(
         title: Text(
-          reading.title,
+          podcast.title,
           maxLines: 2,
           style: TextStyle(
             fontSize: 16,
@@ -80,7 +92,7 @@ Widget ListItem(BuildContext context, Reading reading) {
         subtitle: Container(
           margin: const EdgeInsets.only(top: 10),
           child: Text(
-            reading.author,
+            "",
             style: TextStyle(color: Color(0xFF8F8F8F)),
           ),
         ),
@@ -91,16 +103,16 @@ Widget ListItem(BuildContext context, Reading reading) {
             size: 18,
           ),
           onPressed: () async {
-            print("PATH=== $reading.path");
-            if (reading.path.isEmpty) {
-              print("EMPTY >>>>");
-              final file = await PDFApi.loadNetwork(reading.url, reading.title, false);
-              print("file path >>>> ${file.path}");
-              Provider.of<Readings>(context, listen: false)
-                  .addReadingPath(reading.id, file.path);
-            }
-            Navigator.of(context).pushNamed(PdfViewerScreen.routeName,
-                arguments: {"title": reading.title, "path": reading.path});
+            // print("PATH=== $reading.path");
+            // if (reading.path.isEmpty) {
+            //   print("EMPTY >>>>");
+            //   final file = await PDFApi.loadNetwork(reading.url, reading.title);
+            //   print("file path >>>> ${file.path}");
+            //   Provider.of<Readings>(context, listen: false)
+            //       .addReadingPath(reading.id, file.path);
+            // }
+            // Navigator.of(context).pushNamed(PdfViewerScreen.routeName,
+            //     arguments: {"title": reading.title, "path": reading.path});
           },
         ),
       ),

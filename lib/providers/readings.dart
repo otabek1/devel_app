@@ -36,9 +36,9 @@ class Readings with ChangeNotifier {
 
       return [..._readings.where((element) => element.isBook==1).toList()];
     } else {
-      print("fetching data");
+      // print("fetching data");
       fetchAndSetPath();
-      print("finished fetching data");
+      // print("finished fetching data");
       return [..._readings.where((element) => element.isBook == 1).toList()];
     }
   }
@@ -50,18 +50,18 @@ class Readings with ChangeNotifier {
 
       return [..._readings.where((element) => element.isBook==0).toList()];
     } else {
-      print("fetching data");
+      // print("fetching data");
       fetchAndSetPath();
-      print("finished fetching data");
+      // print("finished fetching data");
       return [..._readings.where((element) => element.isBook == 0).toList()];
     }
   }
 
   Future<void> fetchAndSetPath() async {
     try {
-      print("try");
+      // print("try");
       final dataList = await DBHelper.getData("Readings");
-      print("tried $dataList");
+      // print("tried $dataList");
 
       dataList.forEach((item) {
         var id = item["id"];
@@ -77,7 +77,7 @@ class Readings with ChangeNotifier {
             isBook: _readings[index].isBook,
             path: item["path"],
           );
-          print("PATH FROM SQL ${item["path"]}");
+          // print("PATH FROM SQL ${item["path"]}");
         }
         if (_isFirst) {
           notifyListeners();
@@ -85,9 +85,9 @@ class Readings with ChangeNotifier {
         }
       });
     } catch (e) {
-      print("Catch ${e.toString()}");
+      // print("Catch ${e.toString()}");
       _readings.forEach((element) {
-        print("PATh FROM SQLSS ${element.path}");
+        // print("PATh FROM SQLSS ${element.path}");
       });
     }
   }
@@ -95,7 +95,7 @@ class Readings with ChangeNotifier {
   void addReadingPath(String id, String path) {
     var index = _readings.indexWhere((element) => element.id == id);
     if (index != -1) {
-      DBHelper.updatePath(id, path.toString());
+      DBHelper.updatePath("Radings",id, path.toString());
 
       _readings[index] = Reading(
           id: id,
@@ -113,7 +113,7 @@ class Readings with ChangeNotifier {
   void getReadings() async {
     var snapshot = await articlesReference.get();
 
-    print("snapsot>>>> ${snapshot.docChanges[0].doc.id}");
+    // print("snapsot>>>> ${snapshot.docChanges[0].doc.id}");
     if (snapshot.docChanges.isNotEmpty) {
       var docChanges = snapshot.docChanges;
       addReading(docChanges);
@@ -139,12 +139,12 @@ class Readings with ChangeNotifier {
         url: data["url"],
       );
 
-      print("Readings ${_readings}");
+      // print("Readings ${_readings}");
       var _isAvailable =
           _readings.indexWhere((element) => element.id == reading.id);
-      print("IsAvailable ${_isAvailable}");
+      // print("IsAvailable ${_isAvailable}");
       if (_isAvailable == -1) {
-        print("addding +++++");
+        // print("addding +++++");
         _readings.add(reading);
         DBHelper.insert("Readings", {
           "id": docChange.doc.id,

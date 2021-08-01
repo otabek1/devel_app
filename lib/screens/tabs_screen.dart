@@ -1,3 +1,4 @@
+import 'package:devel_app/screens/podcasts_screen.dart';
 import 'package:devel_app/screens/readings_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class _TabsScreenState extends State<TabsScreen> {
   late List<Widget> _pages;
   @override
   void initState() {
-    _pages = [ReadingsScreen(false), ReadingsScreen(true), ReadingsScreen(false)];
+    // _pages = [ReadingsScreen(false), ReadingsScreen(true), PodcastsScreen()];
     super.initState();
   }
 

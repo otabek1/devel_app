@@ -16,17 +16,18 @@ class PDFApi {
   //   return _storeFile(path, bytes);
   // }
 
-  static Future<File> loadNetwork(String url, String title) async {
+  static Future<File> loadNetwork(
+      String url, String title, bool isPodcast) async {
     final response = await http.get(Uri.parse(url));
     final bytes = response.bodyBytes;
 
-    return _storeFile(url, bytes, title);
+    return _storeFile(url, bytes, title, isPodcast);
   }
 
   static Future<File?> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'],
+      allowedExtensions: ['pdf', "mp3"],
     );
 
     if (result == null) return null;
@@ -44,11 +45,16 @@ class PDFApi {
   //   }
   // }
 
-  static Future<File> _storeFile(String url, List<int> bytes, String title) async {
-    final filename = basename("salom.pdf");
+  static Future<File> _storeFile(
+      String url, List<int> bytes, String title, bool isPodcast) async {
+    // final filename = basename("salom.pdf");
     final dir = await getExternalStorageDirectory();
-
-    final file = File('${dir!.path}/$title.pdf');
+    File file;
+    if (isPodcast) {
+      file = File('${dir!.path}/$title.mp3');
+    } else {
+      file = File('${dir!.path}/$title.pdf');
+    }
     await file.writeAsBytes(bytes, flush: false);
     return file;
   }
