@@ -72,7 +72,7 @@ class MainDrawer extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed(TodoScreen.routeName);
           }),
           buildListTile("Bog'lanish", Icons.phone, () {
-            Navigator.of(context).pushReplacementNamed(ContactScreen.routeName);
+            Navigator.of(context).pushNamed(ContactScreen.routeName);
           }),
         ],
       ),

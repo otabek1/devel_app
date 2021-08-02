@@ -19,21 +19,35 @@ class PodcastsScreen extends StatelessWidget {
             child: Text("Qandaydir xatolik yuz berdi. Qaytdan urinib ko'ring"),
           );
         } else if (data.hasData) {
-          podcasts = data.data;
-          body = Container(
-            height: MediaQuery.of(context).size.height,
-            margin: const EdgeInsets.all(5),
-            padding: const EdgeInsets.all(5),
-            child: ListView.builder(
-              itemCount: podcasts.length,
-              itemBuilder: (ctx, index) {
-                return PodcastItem(
-                  context,
-                  podcasts[index],
-                );
-              },
-            ),
-          );
+          if (data.data != null) {
+            podcasts = data.data;
+            body = Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  padding: const EdgeInsets.all(5),
+                  child: ListView.builder(
+                    itemCount: podcasts.length,
+                    itemBuilder: (ctx, index) {
+                      return PodcastItem(
+                        context,
+                        podcasts[index],
+                      );
+                    },
+                  ),
+                ),
+                Image.network(
+                  "https://firebasestorage.googleapis.com/v0/b/develapp-f407e.appspot.com/o/ads%2Freklama.png?alt=media&token=1cffad5e-d7fe-4f6b-8618-ebbee94c021a",
+                  fit: BoxFit.fill,
+                  height: 100,
+
+                  // width: MediaQuery.of(context).size.width,
+                ),
+              ],
+            );
+          }
         } else if (data.connectionState == ConnectionState.waiting) {
           body = Dialog(
             child: Padding(

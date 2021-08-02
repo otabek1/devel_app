@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devel_app/helpers/reading_db.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,14 +48,16 @@ class Readings with ChangeNotifier {
 
   Future<List<Reading>> get readings async {
     await getAndSetData();
-    // notifyListeners();
+    // sleep(Duration(seconds: 2));
     return _readings;
+
+    // notifyListeners();
   }
 
   Future<void> getAndSetData() async {
     print("calling get and set");
     var data = await ReadingDb.getData();
-    var fromFirebase = getReadingFromFirebase();
+    var fromFirebase = await getReadingFromFirebase();
 
     data.forEach((element) {
       var fromJson = Reading.fromJson(element);
@@ -71,28 +75,25 @@ class Readings with ChangeNotifier {
     // notifyListeners();
   }
 
-  List<Reading> getReadingFromFirebase() {
+  Future<List<Reading>> getReadingFromFirebase() async {
     List<Reading> readingsFromFirebase = [];
-    readingsReference.get().then((value) {
-      value.docs.forEach((element) {
-        var data = element.data();
-        // print("data $data");
-        var fromJson = Reading.fromJson(data as Map<String, dynamic>);
-        if (_readings.indexWhere((element) => element.id == fromJson.id) ==
-            -1) {
-          readingsFromFirebase.add(fromJson);
-        }
-      });
+    var value = await readingsReference.get();
 
-      if (readingsFromFirebase.isNotEmpty) {
-        readingsFromFirebase.forEach((element) async {
-          await ReadingDb.insert(element);
-        });
+    value.docs.forEach((element) {
+      var data = element.data();
+      // print("data $data");
+      var fromJson = Reading.fromJson(data as Map<String, dynamic>);
+      if (_readings.indexWhere((element) => element.id == fromJson.id) == -1) {
+        readingsFromFirebase.add(fromJson);
       }
-      return readingsFromFirebase;
     });
 
-    return [];
+    if (readingsFromFirebase.isNotEmpty) {
+      readingsFromFirebase.forEach((element) async {
+        await ReadingDb.insert(element);
+      });
+    }
+    return readingsFromFirebase;
   }
 
   Future<void> updatePath(Reading reading) async {

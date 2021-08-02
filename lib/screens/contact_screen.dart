@@ -1,5 +1,7 @@
 import 'package:devel_app/widgets/drawer.dart';
 import 'package:flutter/material.dart';
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactScreen extends StatelessWidget {
   static const routeName = "/contact";
@@ -12,31 +14,69 @@ class ContactScreen extends StatelessWidget {
         title: Text("Bog'lanish"),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width - 25,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         color: Colors.white,
-        child: Container(
-          height: 500,
-          width: 100,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width - 50,
-                child: ListTile(
-                  leading: Icon(
-                    Icons.phone,
-                    size: 50,
-                    color: Colors.black,
-                  ),
-                  title: Text("Salom"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Image.asset(
+                "assets/images/logo.jpg",
+                height: (MediaQuery.of(context).size.height * .3),
+                width: MediaQuery.of(context).size.width - 55,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      child: ListTile(
+                        leading: Icon(Icons.phone),
+                        title: Text("+998931323342"),
+                        onTap: () async {
+                          await launch("tel: +998931323342");
+                        },
+                      ),
+                    ),
+                    Container(
+                      child: ListTile(
+                        leading: FaIcon(FontAwesomeIcons.instagram),
+                        title: Text("https://instagram.com/develapp.uz"),
+                        onTap: () async {
+                          await launch("https://instagram.com/develapp.uz");
+                        },
+                      ),
+                    ),
+                    Container(
+                      child: ListTile(
+                        leading: FaIcon(FontAwesomeIcons.telegram),
+                        title: Text("https://t.me/DevelApp"),
+                        onTap: () async {
+                          await launch("https://t.me/DevelApp");
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Image.network(
+              "https://firebasestorage.googleapis.com/v0/b/develapp-f407e.appspot.com/o/ads%2Freklama.png?alt=media&token=1cffad5e-d7fe-4f6b-8618-ebbee94c021a",
+              fit: BoxFit.fill,
+              height: 100,
+
+              // width: MediaQuery.of(context).size.width,
+            ),
+          ],
         ),
       ),
     );

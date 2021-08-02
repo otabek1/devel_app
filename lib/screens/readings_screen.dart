@@ -24,28 +24,42 @@ class ReadingsScreen extends StatelessWidget {
                   Text("Qandaydir xatolik yuz berdi. Qaytdan urinib ko'ring"),
             );
           } else if (data.hasData) {
-            if (isBook!) {
-              readings =
-                  data.data!.where((element) => element.isBook == 1).toList();
-            } else {
-              readings =
-                  data.data!.where((element) => element.isBook == 0).toList();
+            if (data.data != null) {
+              print("data is not null ${data.data}");
+              if (isBook!) {
+                readings =
+                    data.data!.where((element) => element.isBook == 1).toList();
+              } else {
+                readings =
+                    data.data!.where((element) => element.isBook == 0).toList();
+              }
+              body = Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      height: MediaQuery.of(context).size.height * 0.70,
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
+                      child: ListView.builder(
+                        itemCount: readings.length,
+                        itemBuilder: (ctx, index) {
+                          return ListItem(
+                            context,
+                            readings[index],
+                          );
+                        },
+                      ),
+                    ),
+                    Image.network(
+                      "https://firebasestorage.googleapis.com/v0/b/develapp-f407e.appspot.com/o/ads%2Freklama.png?alt=media&token=1cffad5e-d7fe-4f6b-8618-ebbee94c021a",
+                      fit: BoxFit.fill,
+                      height: 100,
+
+                      // width: MediaQuery.of(context).size.width,
+                    ),
+                  ]);
             }
-            body = Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height,
-              margin: const EdgeInsets.all(5),
-              padding: const EdgeInsets.all(5),
-              child: ListView.builder(
-                itemCount: readings.length,
-                itemBuilder: (ctx, index) {
-                  return ListItem(
-                    context,
-                    readings[index],
-                  );
-                },
-              ),
-            );
           } else if (data.connectionState == ConnectionState.waiting) {
             body = Dialog(
               child: Padding(

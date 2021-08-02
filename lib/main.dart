@@ -51,34 +51,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (_error) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Error"),
-        ),
-        body: Center(
-          child: Text("Error"),
-        ),
-      );
-    }
+    var body;
 
     // Show a loader until FlutterFire is initialized
+
     if (!_initialized) {
-     
-      return MaterialApp(
-        home: Scaffold(
-          appBar: AppBar(
-            brightness: Brightness.dark,
-            title: Text("Loading"),
-          ),
-          body: Center(
-            child: CircularProgressIndicator(),
+      body = Scaffold(
+        appBar: AppBar(
+          title: Text("Loading . . ."),
+        ),
+        body: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              Text("Yuklanmoqda . . ."),
+            ],
           ),
         ),
       );
     }
     print("MyApp");
-
+    if (_initialized) {
+      body = HomeScreen();
+    }
+    if (_error) {
+      body = Scaffold(
+        appBar: AppBar(
+          title: Text("Error"),
+        ),
+        body: Center(
+          child: Text("Qandaydir xatolik yuz berdi. Qaytadan urinib ko'ring"),
+        ),
+      );
+    }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Readings()),
@@ -92,7 +98,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: createMaterialColor(Color.fromRGBO(43, 49, 77, 1)),
         ),
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: body,
         routes: {
           PdfViewerScreen.routeName: (_) => PdfViewerScreen(),
           PodcastsScreen.routeName: (_) => PodcastsScreen(),

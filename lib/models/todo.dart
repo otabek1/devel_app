@@ -1,4 +1,3 @@
-import '../utils.dart';
 
 class TodoField {
   static const createdTime = 'createdTime';

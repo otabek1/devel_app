@@ -36,7 +36,7 @@ class Podcasts with ChangeNotifier {
   Future<void> getAndSetData() async {
     print("calling get and set");
     var data = await PodcastDb.getData();
-    var fromFirebase = getPodcastFromFirebase();
+    var fromFirebase = await getPodcastFromFirebase();
 
     data.forEach((element) {
       var fromJson = Podcast.fromJson(element);
@@ -54,28 +54,25 @@ class Podcasts with ChangeNotifier {
     // notifyListeners();
   }
 
-  List<Podcast> getPodcastFromFirebase() {
+  Future<List<Podcast>> getPodcastFromFirebase() async {
     List<Podcast> podcastsFromFirebase = [];
-    PodcastsReference.get().then((value) {
-      value.docs.forEach((element) {
-        var data = element.data();
-        // print("data $data");
-        var fromJson = Podcast.fromJson(data as Map<String, dynamic>);
-        if (_podcasts.indexWhere((element) => element.id == fromJson.id) ==
-            -1) {
-          podcastsFromFirebase.add(fromJson);
-        }
-      });
+    var value = await PodcastsReference.get();
 
-      if (podcastsFromFirebase.isNotEmpty) {
-        podcastsFromFirebase.forEach((element) async {
-          await PodcastDb.insert(element);
-        });
+    value.docs.forEach((element) {
+      var data = element.data();
+      // print("data $data");
+      var fromJson = Podcast.fromJson(data as Map<String, dynamic>);
+      if (_podcasts.indexWhere((element) => element.id == fromJson.id) == -1) {
+        podcastsFromFirebase.add(fromJson);
       }
-      return podcastsFromFirebase;
     });
 
-    return [];
+    if (podcastsFromFirebase.isNotEmpty) {
+      podcastsFromFirebase.forEach((element) async {
+        await PodcastDb.insert(element);
+      });
+    }
+    return podcastsFromFirebase;
   }
 
   Future<void> updatePath(Podcast podcast) async {

@@ -1,11 +1,5 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:devel_app/api/pdf_api.dart';
-import 'package:devel_app/providers/readings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   static const routeName = "/pdfviewer";
