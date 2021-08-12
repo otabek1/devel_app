@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "521542764207",
-    "project_id": "develapp-f407e",
-    "storage_bucket": "develapp-f407e.appspot.com"
+    "project_number": "948323128880",
+    "project_id": "devellapp",
+    "storage_bucket": "devellapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:521542764207:android:651637b1e7c12fd1e9365a",
+        "mobilesdk_app_id": "1:948323128880:android:6b860b9f1f6cf4385e7ff5",
         "android_client_info": {
           "package_name": "me.otabek.develapp.devel_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "521542764207-c5af9gi9trb0qb7ncd224acrido3jtg9.apps.googleusercontent.com",
+          "client_id": "948323128880-r0274v8a2k349ob1dd19gti2v5geg3b3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBBVyaEf_DZrxIiRMsr7TpR4ZlkBdJdsNE"
+          "current_key": "AIzaSyCMEW4xttPKgkk7-jc0si4sfI4kUsXv4tM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "521542764207-c5af9gi9trb0qb7ncd224acrido3jtg9.apps.googleusercontent.com",
+              "client_id": "948323128880-r0274v8a2k349ob1dd19gti2v5geg3b3.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "521542764207-0va6b0k10rjuaipv2t3kql1t4u6nk5jr.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "me.otabek.develapp.develApp"
-              }
             }
           ]
         }

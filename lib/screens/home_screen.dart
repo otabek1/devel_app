@@ -172,9 +172,9 @@ class HomeScreen extends StatelessWidget {
             elevation: 5,
             shadowColor: Colors.black,
             child: Image.network(
-              "https://firebasestorage.googleapis.com/v0/b/develapp-f407e.appspot.com/o/ads%2Freklama.png?alt=media&token=1cffad5e-d7fe-4f6b-8618-ebbee94c021a",
+              "https://firebasestorage.googleapis.com/v0/b/devellapp.appspot.com/o/reklama.png?alt=media&token=d99baa92-a9dd-480a-aed1-31ed519d74ff",
               fit: BoxFit.fill,
-              height: MediaQuery.of(context).size.height * 0.1,
+              height: 100,
 
               // width: MediaQuery.of(context).size.width,
             ),
