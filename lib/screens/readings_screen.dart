@@ -18,7 +18,8 @@ class ReadingsScreen extends StatelessWidget {
               ModalRoute.of(context)!.settings.arguments as Map<String, bool>;
           final isBook = arguments["isBook"];
           if (data.hasError) {
-            print(" error >> ${data.error.toString()}");
+            print(" error >> ${data.error.toString()} ");
+            print("data ${data.data.toString()}");
             body = Center(
               child:
                   Text("Qandaydir xatolik yuz berdi. Qaytdan urinib ko'ring"),

@@ -49,6 +49,7 @@ class Readings with ChangeNotifier {
   Future<List<Reading>> get readings async {
     await getAndSetData();
     // sleep(Duration(seconds: 2));
+    print("readings ${_readings}");
     return _readings;
 
     // notifyListeners();
@@ -73,6 +74,7 @@ class Readings with ChangeNotifier {
     });
 
     // notifyListeners();
+    print("readings ${_readings}");
   }
 
   Future<List<Reading>> getReadingFromFirebase() async {
